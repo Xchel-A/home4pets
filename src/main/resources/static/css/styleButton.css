@@ -1,0 +1,10 @@
+
+.btnAdd {
+    background-color:  #0abbb5;;
+    float: right;
+    display: block;
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
+}
+

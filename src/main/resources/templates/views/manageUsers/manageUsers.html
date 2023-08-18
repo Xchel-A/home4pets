@@ -1,0 +1,155 @@
+<!doctype html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<header th:replace="~{fragments/head :: head}">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.10.377/pdf.min.js"></script>
+
+</header>
+
+<body>
+<div th:insert="~{fragments/infoToast :: infoToast}">
+</div>
+<div th:replace="~{fragments/navigation :: navigation}">
+</div>
+
+<div class="container mt-3">
+  <div class="row">
+    <h2 class="col-12">Solicitudes de usuarios</h2>
+  </div>
+
+  <div class="table-responsive-sm table-responsive-md mt-2">
+    <div th:insert="~{fragments/alert :: alerts}">
+    </div>
+    <table class="table">
+      <thead>
+      <tr>
+        <th class="text-center" scope="col">Nombre </th>
+        <th class="text-center" scope="col">Email</th>
+        <th class="text-center" scope="col">INE</th>
+        <th class="text-center" scope="col">Comprobante</th>
+        <th class="text-center" scope="col">Estado</th>
+        <th class="text-center" scope="col">Acciones</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr th:each="user, iter : ${users}">
+        <td class="text-center">[[${user.name}]]</td>
+        <td class="text-center">[[${user.username}]]</td>
+        <td>
+          <th:block th:if="${user.ineImg != null}">
+          <!-- Botón para abrir el modal del INE -->
+            <button type="button" class="btn btn-link" data-bs-toggle="modal" data-bs-target="#modalINE">
+              <img class="image-fluid" th:src="@{http://74.208.25.75/images/home4pets/{img}(img=${user.ineImg})}" th:alt="${user.ineImg}" style="max-height: 80px;" />
+            </button>
+          </th:block>
+          <th:block th:if="${user.ineImg == null}">
+            <p style="font-size: 10px;">No se ha proporcionado el INE</p>
+          </th:block>
+        </td>
+        <td>
+          <th:block th:if="${user.comprobanteImg != null}">
+          <!-- Botón para abrir el modal del comprobante -->
+          <button type="button" class="btn btn-link" data-bs-toggle="modal" data-bs-target="#modalComprobante">
+            <img class="image-fluid" th:src="@{http://74.208.25.75/images/home4pets/{img}(img=${user.comprobanteImg})}" th:alt="${user.comprobanteImg}" style="max-height: 80px;" />
+          </button>
+            </th:block>
+            <th:block th:if="${user.comprobanteImg == null}">
+              <p style="font-size: 10px;">No se ha proporcionado el comprobante</p>
+            </th:block>
+        </td>
+        <td>
+          <div th:switch="${user.status}">
+            <div th:if="${user.status == 'aceptado'}">
+              <p class="text-muted text-center">
+                <span class="badge bg-success">Aceptado</span>
+              </p>
+            </div>
+            <div th:case="'pendiente'">
+              <p class="text-muted text-center">
+                <span class="badge bg-warning">Pendiente</span>
+              </p>
+            </div>
+            <div th:case="'rechazado'">
+              <p class="text-muted text-center">
+                <span class="badge bg-danger">Rechazado</span>
+              </p>
+            </div>
+          </div>
+        </td>
+        <td class="d-flex justify-content-center">
+          <!-- BOTÓN DE ACEPTAR -->
+          <form th:action="@{/user/updateStatus}" method="post" class="mx-3">
+            <input type="hidden" name="status" value="aceptado">
+            <!--Mandar el id-->
+            <input type="hidden" name="id" th:value="${user.id}">
+            <button type="submit" class="btn btn-success my-1"><i class="bi bi-check-circle"></i></button>
+          </form>
+          <!-- BOTÓN DE RECHAZAR -->
+          <form th:action="@{/user/updateStatus}" method="post">
+            <input type="hidden" name="status" value="rechazado">
+            <!--Mandar el id-->
+            <input type="hidden" name="id" th:value="${user.id}">
+            <button type="submit" class="btn btn-danger my-1"><i class="bi bi-x-circle"></i></button>
+          </form>
+        </td>
+      </tr>
+      </tbody>
+    </table>
+    <div th:insert="~{fragments/paginator :: paginator}">
+    </div>
+  </div>
+</div>
+
+<!-- Modales -->
+<!-- Modal del INE -->
+<div class="modal fade" id="modalINE" tabindex="-1" aria-labelledby="modalINELabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="modalINELabel">INE</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <img class="img-fluid" src="" alt="INE">
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal del Comprobante -->
+<div class="modal fade" id="modalComprobante" tabindex="-1" aria-labelledby="modalComprobanteLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="modalComprobanteLabel">Comprobante de domicilio</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <img class="img-fluid" src="" alt="Comprobante">
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<div th:replace="~{fragments/footer :: footer}">
+
+</div>
+
+<script>
+  // Capturar clic en botones de las imágenes
+  document.querySelectorAll('.btn-link').forEach(function (button) {
+    button.addEventListener('click', function () {
+      // Obtener la URL de la imagen desde el atributo "src" del botón
+      var imageUrl = this.querySelector('img').getAttribute('src');
+      // Establecer la URL de la imagen en el modal correspondiente
+      var modalId = this.getAttribute('data-bs-target');
+      var modalImg = document.querySelector(modalId + ' .modal-body img');
+      modalImg.setAttribute('src', imageUrl);
+      modalImg.setAttribute('alt', this.querySelector('img').getAttribute('alt'));
+    });
+  });
+</script>
+
+</body>
+
+</html>

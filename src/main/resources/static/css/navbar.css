@@ -1,0 +1,129 @@
+@import url('https://fonts.googleapis.com/css2?family=Comfortaa:wght@400;500;700&family=Nunito:wght@400;500;700&display=swap');
+
+:root{
+    --Playfair: 'Playfair Display', serif;
+    --Quicksand: 'Quicksand', sans-serif;
+    --Roboto: 'Roboto', sans-serif;
+    --dark: #3c393d;
+    --exDark: #2b2b2b;
+
+    /*========== Colors ==========*/
+    --first-color: #FF9B56;
+    --first-color-hover: #E58B4D;
+    --first-color-alt: #FFE1CC;
+    --color-danger: #F75E5E;
+    --color-danger-hover: #F54747;
+    --title-color: #11242C;
+    --text-color: #576C75;
+    --text-color-light: #B6C3C9;
+    --body-color: #FFFAF7;
+    --container-color: #FFFFFF;
+
+    /*========== Font and typography ==========*/
+    /*.5rem = 8px | 1rem = 16px ...*/
+    --title-font: 'Nunito', sans-serif;
+    --text-font: 'Comfortaa', sans-serif;
+    --biggest-font-size: 4rem;
+    --h1-font-size: 2.25rem;
+    --h2-font-size: 1.875rem;
+    --h3-font-size: 1.5rem;
+    --normal-font-size: 1rem;
+    --small-font-size: 875rem;
+    --smaller-font-size: .75rem;
+    --tiny-font-size: .625rem;
+
+    /*========== Font weight ==========*/
+    --font-medium: 500;
+    --font-bold: 700;
+}
+*{
+    padding: 0;
+    margin: 0;
+    font-family: var(--text-font);
+}
+body {
+    background-color: var(--body-color);
+    font-family: var(--text-font);
+    color: var(--text-color);
+}
+h1, h2, h3, h4, h5, h6{
+    font-family: var(--title-font);
+    color: var(--title-color);
+}
+p, a, b {
+    font-family: var(--text-font);
+}
+a {
+    text-decoration: none;
+}
+a:hover {
+    color: var(--first-color);
+}
+
+.color-nav {
+        font-family: 'Nunito', sans-serif;
+        background-color: #FFFAF7;
+}
+.txt__link {
+    color: var(--text-color);
+}
+.txt__link:hover {
+    color: var(--first-color);
+}
+.btn__primary {
+    background-color: var(--first-color);
+    text-decoration: none;
+    border-radius: 5rem;
+    border: none;
+    padding: .5rem 1.5rem;
+    text-align: center;
+    width: 100%;
+    color: white;
+    transition: .3s;
+}
+.btn__primary:hover{
+    background-color: var(--first-color-hover);
+    cursor: pointer;
+    color: white;
+}
+.btn__logout {
+    background-color: var(--color-danger);
+    text-decoration: none;
+    border-radius: 5rem;
+    border: none;
+    padding: .5rem 1.5rem;
+    text-align: center;
+    width: 100%;
+    color: white;
+    transition: .3s;
+}
+.btn__logout:hover{
+    background-color: var(--color-danger-hover);
+    cursor: pointer;
+    color: white;
+}
+.btn__secondary {
+    border: 1px solid var(--first-color);
+    padding: .5rem 1.5rem;
+    border-radius: 5rem;
+    transition: .3s;
+    cursor: pointer;
+    background-color: transparent;
+    color: var(--first-color);
+}
+.btn__secondary:hover {
+    background-color: var(--first-color);
+    color: white;
+}
+.isotipo {
+    width: 9rem;
+    height: 10rem;
+}
+.btn__login-register {
+    color: var(--first-color);
+    font-weight: bold;
+}
+.btn__login-register:hover {
+    color: white;
+    background-color: var(--first-color);
+}

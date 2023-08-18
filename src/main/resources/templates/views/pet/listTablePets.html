@@ -1,0 +1,87 @@
+<!doctype html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<header th:replace="~{fragments/head :: head}">
+</header>
+
+<body>
+    <div th:insert="~{fragments/infoToast :: infoToast}">
+    </div>
+    <div th:replace="~{fragments/navigation :: navigation}">
+    </div>
+
+    <div class="container mt-3">
+        <div class="row">
+            <h2 class="col-6">Mascotas</h2>
+            <div class="col-6 d-flex py-1 justify-content-end" sec:authorize="hasRole('ROLE_VOLUNTARIO')">
+                <a class="btn btnAdd" th:href="@{/pets/create}"><strong><i class="bi bi-plus-lg"></i></strong></a>
+            </div>
+        </div>
+
+        <div class="table-responsive-sm table-responsive-md mt-2">
+            <div th:insert="~{fragments/alert :: alerts}">
+            </div>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th class="text-center" scope="col">#</th>
+                        <th class="text-center" scope="col">Foto</th>
+                        <th class="text-center" scope="col">Nombre</th>
+                        <th class="text-center" scope="col">Edad</th>
+                        <th class="text-center" scope="col">Sexo</th>
+                        <th class="text-center" scope="col">Se puede adoptar</th>
+                        <th class="text-center" scope="col">Fecha de publicación</th>
+                        <th class="text-center" scope="col">Estado publicación</th>
+                        <th class="text-center" scope="col">Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="item, iter : ${listPets}">
+                        <th class="text-center" scope="row">[[${index + (iter.index + 1)}]]</th>
+                        <td class="d-flex justify-content-center align-items-center">
+                            <img class="image-fluid" th:src="@{/uploads/{img}(img=${item.image})}" th:alt="${item.name}" style="max-height: 80px;" />
+                        </td>
+                        <td class="text-center">[[${item.name}]]</td>
+                        <td class="text-center">[[${item.age}]]</td>
+                        <td class="text-capitalize text-center">[[${item.sex}]]</td>
+                        <td class="text-center" th:text="${item.availableAdoption == true ? 'Disponible' : 'No disponible'}"></td>
+                        <td class="text-center">
+                            [[${#dates.format(item.createdAt, 'dd-MMM-yyyy')}]]
+                        </td>
+                        <td>
+                            <div th:switch="${item.isAccepted}">
+                                <div th:if="${item.isAccepted == 'aceptado'}">
+                                    <p class="text-muted text-center">
+                                        <span class="badge bg-success">Aceptado</span>
+                                    </p>
+                                </div>
+                                <div th:case="'pendiente'">
+                                    <p class="text-muted text-center">
+                                        <span class="badge bg-warning">Pendiente</span>
+                                    </p>
+                                </div>
+                                <div th:case="'rechazado'">
+                                    <p class="text-muted text-center">
+                                        <span class="badge bg-danger">Rechazado</span>
+                                    </p>
+                                </div>
+                            </div>
+                        </td>
+                        <td class="">
+                            <a sec:authorize="hasRole('ROLE_VOLUNTARIO')" class="btn btn-warning my-1" th:href="@{/pets/find_update/{id}(id=${item.id})}"><i class="bi bi-pencil-square"></i></a> &nbsp;
+                            <a class="btn btn-info my-1" th:href="@{/pets/detail-admin/{id}(id=${item.id})}"><i class="bi bi-eye"></i></a>
+                            <a sec:authorize="hasAnyRole('ROLE_VOLUNTARIO', 'ROLE_ADMINISTRADOR')" class="btn btn-danger my-1" th:href="@{/pets/deletePet/{id}(id=${item.id})}"><i class="bi bi-trash"></i></a> &nbsp;
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <div th:insert="~{fragments/paginator :: paginator}">
+            </div>
+        </div>
+    </div>
+
+    <div th:replace="~{fragments/footer :: footer}">
+
+    </div>
+</body>
+
+</html>

@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+<body>
+    <nav class="navbar navbar-expand-lg color-nav" th:fragment="navigation">
+        <div class="container-fluid">
+                <a class="navbar-brand " th:href="@{/}"><img class="img-fluid" th:src="@{/images/imagotipo.png}" alt="imagotipo-home4pets" height="215" width="215"></a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse " id="navbarSupportedContent">
+                <ul class="navbar-nav mx-auto mb-2 mb-lg-0 ">
+                    <li class="nav-item">
+                        <a class="nav-link  txt__link" aria-current="page" th:href="@{/}"><b>Inicio</b></a>
+                    </li>
+                    <div sec:authorize="!isAuthenticated() || hasRole('ROLE_ADOPTADOR')" class="d-flex">
+                        <li class="nav-item">
+                            <a class="nav-link  txt__link" th:href="@{/pets/adopt/perro}"><b>Perros</b></a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link  txt__link" th:href="@{/pets/adopt/gato}"><b>Gatos</b></a>
+                        </li>
+                    </div>
+                    <div sec:authorize="isAuthenticated() && !hasRole('ROLE_ADOPTADOR')">
+                        <li class="nav-item">
+                            <a class="nav-link  txt__link" th:href="@{/pets/management_list}"><b>Mascotas</b></a>
+                        </li>
+                    </div>
+                    <div sec:authorize="isAuthenticated() && !hasRole('ROLE_ADMINISTRADOR')">
+                        <li class="nav-item">
+                            <a class="nav-link  txt__link" th:href="@{/adoptions/list}"><b>Solicitudes de adopción</b></a>
+                        </li>
+                    </div>
+                    <div sec:authorize="isAuthenticated() && hasRole('ROLE_ADMINISTRADOR')">
+                        <li class="nav-item">
+                            <a class="nav-link  txt__link" th:href="@{/blog/management_list}"><b>Noticias</b></a>
+                        </li>
+                    </div>
+                    <div sec:authorize="isAuthenticated() && hasRole('ROLE_ADMINISTRADOR')">
+                        <li class="nav-item">
+                            <a class="nav-link  txt__link" th:href="@{/manageUsers}"><b>Usuarios</b></a>
+                        </li>
+                    </div>
+                    <div>
+                        <li class="nav-item">
+                            <a class="nav-link  txt__link" th:href="@{/blog/general}"><b>Noticias General</b></a>
+                        </li>
+                    </div>
+                </ul>
+                <div class="d-flex">
+                    <div sec:authorize="!isAuthenticated()">
+                        <a class="btn__primary" th:href="@{/login}"><i class="bi bi-box-arrow-in-left me-1"></i>Iniciar sesión</a>
+                    </div>
+                    <div sec:authorize="isAuthenticated()" class="d-flex">
+                        <form th:action="@{/logout}" method="post">
+                            <button class="btn__logout" type="submit"><i class="bi bi-box-arrow-in-right"></i><span
+                                    class="d-none d-sm-none d-md-none d-lg-inline d-xl-inline"> Cerrar
+                                    Sesión</span></button>
+                        </form>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </nav>
+</body>
+
+</html>

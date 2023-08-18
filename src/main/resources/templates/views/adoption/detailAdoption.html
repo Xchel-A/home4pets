@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+<header th:replace="~{fragments/head :: head}">
+</header>
+
+<body>
+<div th:replace="~{fragments/navigation :: navigation}">
+</div>
+
+<div class="container mt-3">
+    <h2>¿Listo para tener un nuevo amigo?</h2>
+    <div th:insert="~{fragments/alert :: alerts}">
+    </div>
+
+    <div class="row">
+        <div class="col-12 col-md-4 d-flex mb-2 justify-content-center align-items-center">
+            <img class="img-fluid border-2 border-dark" th:src="@{/uploads/{image}(image=${pet.image})}" th:alt="${pet.name}" />
+        </div>
+        <div class="col-12 col-md-8 border border-3 border-dark rounded p-2">
+            <div th:insert="~{fragments/infoPet :: infoPet}">
+
+            </div>
+            <div class="d-grid gap-2">
+                <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#myModal">
+                    Enviar solicitud de adopción
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal -->
+    <div th:object="${pet}" class="modal fade" id="myModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Solicitud de adopción</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <!-- Contenido del modal -->
+                    <p>Por medio de la presente, deseo expresar mi interés y compromiso en adoptar a la mascota [[*{name}]] que se encuentra en busca de un hogar amoroso.</p>
+                    <p>Entiendo que la adopción de una mascota conlleva responsabilidades y estoy dispuesto/a a asumirlas en su totalidad. A continuación, afirmo y acepto los términos y condiciones establecidos para la adopción de la mascota:</p>
+
+                    <ol>
+                        <li>Me comprometo a proporcionar a la mascota un ambiente seguro, limpio y adecuado para su bienestar.</li>
+                        <li>Me comprometo a brindarle una alimentación balanceada y agua fresca diariamente.</li>
+                        <li>Me comprometo a proporcionarle la atención médica necesaria, incluyendo vacunas, desparasitación y visitas regulares al veterinario.</li>
+                        <li>Me comprometo a dedicarle tiempo y atención, brindándole actividades físicas y estimulación mental adecuadas.</li>
+                        <li>Me comprometo a mantener a la mascota como un miembro de la familia, brindándole amor, cuidado y afecto.</li>
+                        <li>Entiendo que la adopción de la mascota implica un compromiso de por vida y no la consideraré como un objeto desechable.</li>
+                        <li>Acepto que en caso de incumplimiento de los términos y condiciones, la organización responsable de la adopción tiene el derecho de retirar la mascota de mi hogar.</li>
+                    </ol>
+
+                    <p>Declaro que la información proporcionada en esta solicitud es verdadera y exacta. Entiendo que cualquier falsificación de información puede resultar en la negación de la adopción.</p>
+                    <p>Agradezco la oportunidad de considerarme como adoptante de esta querida mascota y me comprometo a brindarle el amor y cuidado que se merece.</p>
+
+                    <div class="col-12 mb-2" sec:authorize="isAuthenticated() && hasRole('ROLE_ADOPTADOR')">
+                        <div th:insert="~{fragments/formAdopt :: formAdopt}">
+
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+</div>
+
+<div th:replace="~{fragments/footer :: footer}">
+</div>
+</body>
+
+</html>
